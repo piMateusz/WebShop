@@ -1,0 +1,22 @@
+[
+  {
+    "name": "Xiaomi Redmi Note 11S 6/64GB Graphite Gray",
+    "price": "1 399,00 zł",
+    "src": "xiaomi.webp"
+  },
+  {
+    "name": "Samsung QN85BA | QE55QN85BA",
+    "price": "4 499,00 zł",
+    "src": "samsung.webp"
+  },
+  {
+    "name": "Nikon Z30 + 16-50mm f/3.5-6.3 VR",
+    "price": "3 645,00 zł",
+    "src": "nikon.webp"
+  },
+  {
+    "name": "AMD Ryzen 7 5800X3D",
+    "price": "1 679,00 zł",
+    "src": "amd.webp"
+  }
+]
