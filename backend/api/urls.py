@@ -1,16 +1,14 @@
 from django.urls import path
 from products.views import ProductList, ProductDetail, CreateProduct, UpdateProduct, DeleteProduct
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView
-)
+from api.auth_views import RegisterView, LoginView, LogoutView
 
 app_name = 'api'
 
 urlpatterns = [
     # Authorization Token endpoints
-    path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('register/', RegisterView.as_view()),
+    path('login/', LoginView.as_view()),
+    path('logout/', LogoutView.as_view()),
 
     # Product endpoints
     path('products/', ProductList.as_view()),
@@ -18,6 +16,4 @@ urlpatterns = [
     path('product/create/', CreateProduct.as_view()),
     path('product/update/<int:id>/', UpdateProduct.as_view()),
     path('product/delete/<int:id>/', DeleteProduct.as_view())
-
-
 ]
