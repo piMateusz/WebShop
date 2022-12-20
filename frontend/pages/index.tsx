@@ -1,11 +1,11 @@
 import Head from 'next/head'
 import Image from 'next/image'
+import { Fragment, useEffect, useState } from 'react';
 
 import Nav from '../components/layout/nav';
 import Footer from '../components/layout/footer';
 import Product, { ProductDict } from '../components/product/product';
-import { Fragment, useEffect, useState } from 'react';
-
+import ShoppingCart from '../components/shoppingCart/shoppingCart';
 
 export default function Home() {
   const [products, setProducts] = useState<ProductDict[]>([]);
@@ -29,8 +29,8 @@ export default function Home() {
       </Head>
       
       <main className="min-h-screen relative">
-        <Nav />
-        <div className="h-full m-4">
+        {products && <Nav products={products}/>}
+        <div className="m-4 main-content">
           <h1 className="py-2 font-bold">
             Electronics & Media
           </h1>
