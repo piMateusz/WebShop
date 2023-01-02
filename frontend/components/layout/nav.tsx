@@ -1,10 +1,37 @@
+import { useState } from 'react';
 import PersonIcon from '@mui/icons-material/Person';
 import SearchIcon from '@mui/icons-material/Search';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
+import Badge, { BadgeProps } from '@mui/material/Badge';
+import IconButton from '@mui/material/IconButton';
+import { styled } from '@mui/material/styles';
 
-const Nav = () => {
+import ShoppingCart from '../shoppingCart/shoppingCart';
+import { ProductDict } from '../product/product';
+import Link from 'next/link';
+
+const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
+  '& .MuiBadge-badge': {
+    right: -3,
+    top: 13,
+    border: `2px solid ${theme.palette.background.paper}`,
+    padding: '0 4px',
+    
+  },
+}));
+
+interface Props {
+  products: ProductDict[];
+}
+
+const Nav = ({ products }: Props) => {
+  // na razie stan w nawigacji, zeby dalo sie cokolwiek pokazac, 
+  // w przyszlosci planuje uzyc do tego reduxa
+  const [isCartVisible, setIsCartVisible] = useState<boolean>(false);
+
   return (
     <nav className="flex items-center justify-between flex-wrap bg-blue-700 p-6">
+      {products && isCartVisible && <ShoppingCart products={products} onClick={setIsCartVisible} />}
       <div className="flex items-center flex-shrink-0 text-white mr-6 cursor-pointer">
         <span className="font-semibold text-xl tracking-tight">WebShop</span>
       </div>
@@ -36,13 +63,20 @@ const Nav = () => {
 
         <div>
           <span className="mx-2 cursor-pointer">
-            <PersonIcon style={{color: 'white'}} />
+            <Link href="/login">
+              <PersonIcon style={{color: 'white'}} />            
+            </Link>
+
           </span>
           <span className="mx-2 cursor-pointer">
             <SearchIcon style={{color: 'white'}} />
           </span>
-          <span className="mx-2 cursor-pointer">
-            <ShoppingBagIcon style={{color: 'white'}} />
+          <span className="mx-2">
+            <IconButton aria-label="cart" onClick={() => setIsCartVisible(prevState => !prevState)}>
+              <StyledBadge badgeContent={4} color="secondary">
+                <ShoppingBagIcon style={{color: 'white'}} />
+              </StyledBadge>
+            </IconButton>
           </span>
         </div>
       </div>

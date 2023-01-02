@@ -4,8 +4,8 @@ import InfoIcon from '@mui/icons-material/Info';
 
 const Footer = () => {
   return(
-    <footer className="absolute w-full left-0 bottom-0">
-      <div className="bg-slate-800 text-white flex justify-around py-4">
+    <footer className="w-full">
+      <div className="bg-slate-800 h-44 text-white flex justify-around py-4">
         <ul className="m-4 cursor-pointer">
           <li className="text-lg font-bold flex items-center">
             <HelpIcon fontSize="medium" style={{color: 'white'}} />
