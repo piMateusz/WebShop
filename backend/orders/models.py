@@ -1,17 +1,41 @@
 from django.db import models
-from accounts.models import UserProfile
-from products.models import Product
-
-# Create your models here.
+from uuid import uuid4
 
 
 class Order(models.Model):
-    code = models.CharField(max_length=9)
-    customer = models.ForeignKey(UserProfile, on_delete=models.PROTECT, related_name='orders')
-    price = models.DecimalField(max_digits=10, decimal_places=2)
+
+    CODE_LENGTH = 8
+
+    code = models.CharField(max_length=9, unique=True, blank=True)
+    customer = models.ForeignKey('accounts.UserProfile', on_delete=models.CASCADE, related_name='orders')
+    price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    date_created = models.DateField(auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        if self._state.adding:
+            self.code = self.generate_unique_code()
+        super(Order, self).save(*args, **kwargs)
+
+    def generate_unique_code(self):
+        while True:
+            code = uuid4().hex[:self.CODE_LENGTH].upper()
+            if not Order.objects.filter(code=code):
+                break
+        return code
+
+    def __str__(self):
+        return self.code
 
 
 class ProductOrder(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.PROTECT)
-    order = models.ForeignKey(Order, on_delete=models.PROTECT, related_name='products')
+    product = models.ForeignKey('products.Product', on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='products')
     quantity = models.IntegerField(default=0)
+    price = models.DecimalField(default=0, max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return f'{self.order} - {self.product}'
+
+    def save(self, *args, **kwargs):
+        self.price = self.quantity * self.product.price
+        super(ProductOrder, self).save(*args, **kwargs)

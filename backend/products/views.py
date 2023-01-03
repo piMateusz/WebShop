@@ -14,8 +14,6 @@ class IsStaffUser(BasePermission):
 
 class ProductVisibilityFilterMixin:
     def get_queryset(self):
-        if self.request.user.is_staff:
-            return Product.objects.all()
         return Product.objects.filter(is_active=True, stock__gt=0)
 
 
