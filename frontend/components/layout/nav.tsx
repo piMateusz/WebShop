@@ -5,6 +5,7 @@ import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import Badge, { BadgeProps } from '@mui/material/Badge';
 import IconButton from '@mui/material/IconButton';
 import { styled } from '@mui/material/styles';
+import { useSelector } from 'react-redux';
 
 import ShoppingCart from '../shoppingCart/shoppingCart';
 import { ProductDict } from '../product/product';
@@ -20,18 +21,21 @@ const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
   },
 }));
 
-interface Props {
-  products: ProductDict[];
-}
-
-const Nav = ({ products }: Props) => {
-  // na razie stan w nawigacji, zeby dalo sie cokolwiek pokazac, 
-  // w przyszlosci planuje uzyc do tego reduxa
+const Nav = () => {
   const [isCartVisible, setIsCartVisible] = useState<boolean>(false);
+  const cart = useSelector((state: any) => state.cart)
+
+  const getTotalQuantity = () => {
+    let total = 0
+    cart && cart.forEach((item: any) => {
+      total += item.quantity
+    })
+    return total
+  }
 
   return (
     <nav className="flex items-center justify-between flex-wrap bg-blue-700 p-6">
-      {products && isCartVisible && <ShoppingCart products={products} onClick={setIsCartVisible} />}
+      {isCartVisible && <ShoppingCart onClick={setIsCartVisible} />}
       <div className="flex items-center flex-shrink-0 text-white mr-6 cursor-pointer">
         <span className="font-semibold text-xl tracking-tight">WebShop</span>
       </div>
@@ -73,7 +77,7 @@ const Nav = ({ products }: Props) => {
           </span>
           <span className="mx-2">
             <IconButton aria-label="cart" onClick={() => setIsCartVisible(prevState => !prevState)}>
-              <StyledBadge badgeContent={4} color="secondary">
+              <StyledBadge badgeContent={getTotalQuantity() || 1} color="secondary">
                 <ShoppingBagIcon style={{color: 'white'}} />
               </StyledBadge>
             </IconButton>

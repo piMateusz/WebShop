@@ -12,6 +12,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useRouter } from 'next/router';
 
 // function Copyright(props: any) {
 //   return (
@@ -29,26 +30,30 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 const theme = createTheme();
 
 export default function SignIn() {
+  const router = useRouter();
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-
-    const response = await fetch ('http://127.0.0.1:8000/api/login/', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      credentials: 'include',
-      body: JSON.stringify({
-        email: data.get('email'),
-        password: data.get('password'),
-      })
-    });
-
-    const status = await response.status;
-    alert(status);
+    try {
+      // const response = await fetch (`${process.env.NEXT_PUBLIC_API_URL}/api/login/`, {
+      const response = await fetch ('http://127.0.0.1:8000/api/login/', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        credentials: 'include',
+        body: JSON.stringify({
+          email: data.get('email'),
+          password: data.get('password'),
+        })
+      });
+      const status = await response.status;
+      if (status === 200){
+        router.push('/');
+      }
+    } catch {
+      return;
+    };
   };
-
-
-  
 
   return (
     <ThemeProvider theme={theme}>
