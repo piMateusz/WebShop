@@ -1,9 +1,6 @@
 import Head from 'next/head'
-import Image from 'next/image'
 import { Fragment, useEffect, useState } from 'react';
 
-import Nav from '../components/layout/nav';
-import Footer from '../components/layout/footer';
 import Product, { ProductDict } from '../components/product/product';
 import ShoppingCart from '../components/shoppingCart/shoppingCart';
 
@@ -21,14 +18,14 @@ export default function Home() {
   })
 
   return (
-    <div>
+    <>
       <Head>
         <title>WebShop</title>
         <meta name="description" content="Online web shop" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       
-      <div className="m-4">
+      <main className="m-4">
         <h1 className="py-2 font-bold">
           Electronics & Media
         </h1>
@@ -39,7 +36,7 @@ export default function Home() {
             </Fragment>
           )}
         </div>
-      </div>
-    </div>
+      </main>
+    </>
   )
 }

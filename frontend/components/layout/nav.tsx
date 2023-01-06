@@ -8,7 +8,6 @@ import { styled } from '@mui/material/styles';
 import { useSelector } from 'react-redux';
 
 import ShoppingCart from '../shoppingCart/shoppingCart';
-import { ProductDict } from '../product/product';
 import Link from 'next/link';
 
 const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
@@ -17,7 +16,6 @@ const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
     top: 13,
     border: `2px solid ${theme.palette.background.paper}`,
     padding: '0 4px',
-    
   },
 }));
 
@@ -34,10 +32,12 @@ const Nav = () => {
   }
 
   return (
-    <nav className="flex items-center justify-between flex-wrap bg-blue-700 p-6">
+    <nav className="flex items-center justify-between flex-wrap bg-sky-900 p-6">
       {isCartVisible && <ShoppingCart onClick={setIsCartVisible} />}
       <div className="flex items-center flex-shrink-0 text-white mr-6 cursor-pointer">
-        <span className="font-semibold text-xl tracking-tight">WebShop</span>
+        <Link href="/">
+          <span className="font-semibold text-xl tracking-tight">WebShop</span>
+        </Link>
       </div>
 
       <div className="block lg:hidden">
@@ -77,7 +77,7 @@ const Nav = () => {
           </span>
           <span className="mx-2">
             <IconButton aria-label="cart" onClick={() => setIsCartVisible(prevState => !prevState)}>
-              <StyledBadge badgeContent={getTotalQuantity() || 1} color="secondary">
+              <StyledBadge badgeContent={getTotalQuantity() || 0} color="secondary">
                 <ShoppingBagIcon style={{color: 'white'}} />
               </StyledBadge>
             </IconButton>

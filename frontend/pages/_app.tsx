@@ -11,9 +11,11 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <div className="h-screen">
+        <div className="min-h-screen flex flex-col">
           <Nav />
-          <Component {...pageProps} />
+          <div className="main-content">
+            <Component {...pageProps} />
+          </div>
           <Footer />
         </div>
       </PersistGate>

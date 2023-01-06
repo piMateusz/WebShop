@@ -27,7 +27,13 @@ import { useRouter } from 'next/router';
 //   );
 // }
 
-const theme = createTheme();
+let theme = createTheme({
+  palette: {
+    secondary: {
+      main: '#0C4A6E',
+    },
+  },
+});
 
 export default function SignIn() {
   const router = useRouter();
