@@ -28,24 +28,18 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       
-      <main className="min-h-screen relative">
-        {products && <Nav products={products}/>}
-        <div className="m-4 main-content">
-          <h1 className="py-2 font-bold">
-            Electronics & Media
-          </h1>
-          <div className="flex justify-around">
-            {products.map((item: ProductDict) => 
-              <Fragment key={item.src}>
-                <Product src={item.src} name={item.name} price={item.price} />
-              </Fragment>
-            )}
-          </div>
+      <div className="m-4">
+        <h1 className="py-2 font-bold">
+          Electronics & Media
+        </h1>
+        <div className="flex justify-around">
+          {products.map((item: ProductDict) =>
+            <Fragment key={item.src}>
+              <Product src={item.src} name={item.name} price={item.price} id={item.id} />
+            </Fragment>
+          )}
         </div>
-
-        <Footer />
-      </main>
-
+      </div>
     </div>
   )
 }
