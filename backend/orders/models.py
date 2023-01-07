@@ -1,5 +1,6 @@
 from django.db import models
 from uuid import uuid4
+from products.models import Product
 
 
 class Order(models.Model):
@@ -23,6 +24,10 @@ class Order(models.Model):
                 break
         return code
 
+    def update_price(self):
+        self.price = sum(self.products.values_list('price', flat=True))
+        self.save()
+
     def __str__(self):
         return self.code
 
@@ -39,3 +44,10 @@ class ProductOrder(models.Model):
     def save(self, *args, **kwargs):
         self.price = self.quantity * self.product.price
         super(ProductOrder, self).save(*args, **kwargs)
+
+    @classmethod
+    def create_by_product_id(cls, product_id, quantity, order):
+        product = Product.objects.get(id=product_id)
+        product.stock -= quantity
+        product.save()
+        cls.objects.create(product=product, quantity=quantity, order=order)

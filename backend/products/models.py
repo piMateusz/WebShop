@@ -1,6 +1,6 @@
 from django.db import models
 from django_resized import ResizedImageField
-import os
+from django.template.defaultfilters import slugify
 
 
 class Product(models.Model):
@@ -13,6 +13,22 @@ class Product(models.Model):
     stock = models.IntegerField(default=0)
     is_active = models.BooleanField(default=True)
     image = ResizedImageField(size=[IMAGE_SIZE, IMAGE_SIZE], upload_to='products/', blank=True, null=True)
+    category = models.ForeignKey('products.Category', on_delete=models.SET_NULL, blank=True, null=True, related_name='products')
 
     def __str__(self):
         return self.name
+
+
+class Category(models.Model):
+    title = models.CharField(max_length=100, unique=True)
+    slug = models.SlugField(unique=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        super(Category, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return self.title
+
+
+
