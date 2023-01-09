@@ -4,12 +4,17 @@ from .serializers import OrderSerializer
 from .models import Order, ProductOrder
 from accounts.models import UserProfile
 from rest_framework.response import Response
+from rest_framework.exceptions import AuthenticationFailed
 from products.models import Product
 from django.http import Http404
+import jwt
 
 
 class OrderList(generics.ListAPIView):
     serializer_class = OrderSerializer
+
+    def get(self, request, *args, **kwargs):
+        return super(OrderList, self).get(request, *args, *kwargs)
 
     def get_queryset(self):
         return Order.objects.all()
@@ -62,3 +67,4 @@ class CreateOrder(APIView):
             if quantity > product.stock:
                 return False
         return True
+

@@ -1,5 +1,5 @@
 from django.urls import path
-from products.views import ProductList, ProductDetail, CreateProduct, UpdateProduct, DeleteProduct
+from products.views import ProductList, ProductDetail, CreateProduct, UpdateProduct, DeleteProduct, CategoryList
 from orders.views import OrderList, CreateOrder
 from api.auth_views import RegisterView, LoginView, LogoutView
 
@@ -17,6 +17,8 @@ urlpatterns = [
     path('product/create/', CreateProduct.as_view()),
     path('product/update/<int:id>/', UpdateProduct.as_view()),
     path('product/delete/<int:id>/', DeleteProduct.as_view()),
+    path('categories/', CategoryList.as_view()),
+
 
     # Order endpoints
     path('orders/', OrderList.as_view()),
