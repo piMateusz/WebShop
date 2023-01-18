@@ -1,7 +1,7 @@
 export type shoppingCartProperties = {
   id: number,
   name: string,
-  src: string,
+  image: string,
   price: number,
   quantity: number,
 };

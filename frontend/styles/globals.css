@@ -9,6 +9,11 @@ body {
   min-height: 100vh;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  --primary-color: #0C4A6E;
+}
+
+.primary-color {
+  color: var(--primary-color);
 }
 
 nav, footer {

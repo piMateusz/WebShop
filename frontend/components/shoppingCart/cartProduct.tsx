@@ -15,10 +15,10 @@ const CardProduct = ({ product }: Props) => {
   return (
     <div className="flex p-2 border-b-2 border-gray-400">
       <Image 
-        src={`/img/electronics/${product.src}`}
+        src={product.image}
         alt="product"
-        width={104}
-        height={90}
+        width={100}
+        height={100}
       />
       <div className="flex flex-col w-full ml-4 mt-2">
         <span className="font-bold text-lg">{product.name}</span>

@@ -4,18 +4,20 @@ import { Fragment, useEffect, useState } from 'react';
 import Product, { ProductDict } from '../components/product/product';
 import ShoppingCart from '../components/shoppingCart/shoppingCart';
 
-export default function Home() {
+export default function Home({ data }: any) {
   const [products, setProducts] = useState<ProductDict[]>([]);
 
-  const fetchProducts = () => {
-    fetch('/static/products.json')
-      .then((response) => response.json())
-      .then((data) => setProducts(data))
-  }
-
-  useEffect(() => {
-    fetchProducts();
-  })
+  if (!data) {
+    return (
+      <div>
+        <h1>
+          500
+        </h1>
+        <div>
+          Internal Server Error :/
+        </div>
+      </div>
+  )}
 
   return (
     <>
@@ -25,18 +27,35 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       
-      <main className="m-4">
-        <h1 className="py-2 font-bold">
+      <main className="m-4 max-w-7xl mx-auto">
+        <h1 className="py-2 text-xl font-bold">
           Electronics & Media
         </h1>
         <div className="flex justify-around">
-          {products.map((item: ProductDict) =>
-            <Fragment key={item.src}>
-              <Product src={item.src} name={item.name} price={item.price} id={item.id} />
+          {data.map((item: ProductDict) =>
+            <Fragment key={item.image}>
+              <Product image={item.image} name={item.name} price={item.price} id={item.id} />
             </Fragment>
           )}
         </div>
       </main>
     </>
   )
+}
+
+export async function getServerSideProps() {
+  let data = null;
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products/`)
+    if (response.status === 200)
+     data = await response.json();
+  }
+  catch {
+    return {
+      props: {data}, 
+    };
+  }
+  return {
+    props: {data},
+  };
 }

@@ -20,7 +20,7 @@ const ShoppingCart = ({ onClick }: Props) => {
         {cartProducts && cartProducts.length !== 0 && (
           <>
           {cartProducts.map((item: shoppingCartProperties) =>
-            <div key={item.src}>
+            <div key={item.image}>
               <CartProduct product={item}/>
             </div>
           )}
