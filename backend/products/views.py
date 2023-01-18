@@ -1,6 +1,6 @@
 from rest_framework import generics
-from .models import Product
-from .serializers import ProductSerializer
+from .models import Product, Category
+from .serializers import ProductSerializer, CategorySerializer
 from rest_framework.permissions import BasePermission
 
 
@@ -17,8 +17,15 @@ class ProductVisibilityFilterMixin:
         return Product.objects.filter(is_active=True, stock__gt=0)
 
 
-class ProductList(ProductVisibilityFilterMixin, generics.ListAPIView):
+class ProductList(generics.ListAPIView):
     serializer_class = ProductSerializer
+
+    def get_queryset(self):
+        category = self.request.query_params.get('category')
+
+        if category:
+            return Product.objects.filter(is_active=True, stock__gt=0, category__slug=category)
+        return Product.objects.filter(is_active=True, stock__gt=0)
 
 
 class ProductDetail(ProductVisibilityFilterMixin, generics.RetrieveAPIView):
@@ -43,3 +50,18 @@ class DeleteProduct(generics.DestroyAPIView):
     permission_classes = (IsStaffUser,)
     queryset = Product.objects.all()
     lookup_field = 'id'
+
+
+class CategoryList(generics.ListAPIView):
+    serializer_class = CategorySerializer
+
+    def get_queryset(self):
+        return Category.objects.all()
+
+
+
+
+
+
+
+
