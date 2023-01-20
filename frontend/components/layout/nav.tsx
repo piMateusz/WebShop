@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import PersonIcon from '@mui/icons-material/Person';
 import SearchIcon from '@mui/icons-material/Search';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 
 import ShoppingCart from '../shoppingCart/shoppingCart';
 import Link from 'next/link';
+import getCookie from '../../utils/getCookie';
 
 const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
   '& .MuiBadge-badge': {
@@ -22,6 +23,7 @@ const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
 const Nav = () => {
   const [isCartVisible, setIsCartVisible] = useState<boolean>(false);
   const cart = useSelector((state: any) => state.cart)
+  const [isUserLogged, setIsUserLogged] = useState(false);
 
   const getTotalQuantity = () => {
     let total = 0
@@ -30,6 +32,27 @@ const Nav = () => {
     })
     return total
   }
+
+  useEffect(() => {
+    console.log('in nav use effect!')
+    const token = getCookie(document.cookie, 'jwt');
+    if (token) {
+      setIsUserLogged(true);
+    }
+  }, [])
+
+  async function logOut() {
+    try {
+      const requestUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/logout/`;
+      const response = await fetch(requestUrl, {method: 'POST'})
+      if (response.status === 200)
+        setIsUserLogged(false);
+        document.cookie = 'jwt=; Max-Age=0; path=/;';
+        return;
+    } catch {
+      return; // handle exceptions here
+    }
+  };
 
   return (
     <nav className="flex items-center justify-between flex-wrap bg-sky-900 p-6">
@@ -66,12 +89,37 @@ const Nav = () => {
         </div>
 
         <div>
-          <span className="mx-2 cursor-pointer">
-            <Link href="/login">
-              <PersonIcon style={{color: 'white'}} />            
-            </Link>
-
-          </span>
+          { isUserLogged && (
+            <>
+              <button
+                className="mx-2 text-white"
+                onClick={() => logOut()}
+              >
+                <Link href="/logout">
+                  Logout
+                </Link>
+              </button>
+              <span className="mx-2 cursor-pointer">
+                <Link href="/userProfile">
+                  <PersonIcon style={{color: 'white'}} />
+                </Link>
+              </span>
+            </>
+          )}
+          { !isUserLogged && (
+            <>
+              <span className="mx-2 cursor-pointer text-white">
+                <Link href="/login">
+                  Sign In
+                </Link>
+              </span>
+              <span className="mx-2 cursor-pointer text-white">
+                <Link href="/register">
+                  Sign Up
+                </Link>
+              </span>
+            </>
+          )}
           <span className="mx-2 cursor-pointer">
             <SearchIcon style={{color: 'white'}} />
           </span>

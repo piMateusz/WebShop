@@ -1,11 +1,9 @@
 import Head from 'next/head'
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment } from 'react';
 
 import Product, { ProductDict } from '../components/product/product';
-import ShoppingCart from '../components/shoppingCart/shoppingCart';
 
 export default function Home({ data }: any) {
-  const [products, setProducts] = useState<ProductDict[]>([]);
 
   if (!data) {
     return (

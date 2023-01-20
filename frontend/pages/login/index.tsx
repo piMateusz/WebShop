@@ -53,7 +53,7 @@ export default function SignIn() {
       });
       const status = await response.status;
       if (status === 200){
-        router.push('/');
+        router.push('/userProfile');
       }
     } catch {
       return;
