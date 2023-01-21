@@ -1,6 +1,6 @@
 from django.urls import path
 from products.views import ProductList, ProductDetail, CreateProduct, UpdateProduct, DeleteProduct, CategoryList
-from orders.views import OrderList, CreateOrder
+from orders.views import OrderList, CreateOrder, UserOrderList
 from api.auth_views import RegisterView, LoginView, LogoutView
 
 app_name = 'api'
@@ -23,4 +23,5 @@ urlpatterns = [
     # Order endpoints
     path('orders/', OrderList.as_view()),
     path('orders/create/', CreateOrder.as_view()),
+    path('orders/user/<int:id>/', UserOrderList.as_view())
 ]
