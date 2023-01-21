@@ -1,4 +1,4 @@
-from rest_framework import generics
+from rest_framework import generics, filters
 from .models import Product, Category
 from .serializers import ProductSerializer, CategorySerializer
 from rest_framework.permissions import BasePermission
@@ -19,6 +19,8 @@ class ProductVisibilityFilterMixin:
 
 class ProductList(generics.ListAPIView):
     serializer_class = ProductSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['name']
 
     def get_queryset(self):
         category = self.request.query_params.get('category')
