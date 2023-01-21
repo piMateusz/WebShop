@@ -75,3 +75,11 @@ class UserOrderList(generics.ListAPIView):
         user_id = self.kwargs.get(self.lookup_url_kwarg)
         return Order.objects.filter(customer_id=user_id)
 
+
+class OrderDetail(generics.RetrieveAPIView):
+    serializer_class = OrderSerializer
+    lookup_field = 'id'
+
+    def get_queryset(self):
+        return Order.objects.all()
+
