@@ -1,16 +1,55 @@
 import Link from 'next/link';
-import { useSelector } from 'react-redux'
-import DeleteIcon from '@mui/icons-material/Delete';
+import { useDispatch, useSelector } from 'react-redux'
+import jwt_decode from 'jwt-decode';
 
 import { shoppingCartProperties } from '../shoppingCart/type';
 import CartProduct from './cartProduct';
+import getCookie from '../../utils/getCookie';
+import { useRouter } from 'next/router';
+import { removeAllItems } from './slice';
 
 interface Props {
   onClick: (isVisible: boolean) => void;
 }
 
+export interface userInfo {
+  id: number;
+  exp: number;
+  iat: number;
+}
+
+// TODO change name of onClick prop to something more meaningful, e.g. setShoppingCartVisible
 const ShoppingCart = ({ onClick }: Props) => {
-  const cartProducts = useSelector((state: any) => state.cart)
+  const cartProducts = useSelector((state: any) => state.cart);
+  const dispatch = useDispatch();
+  const router = useRouter();
+
+  async function createOrder() {
+    const token = getCookie(document.cookie, 'jwt');
+    if (token) {
+      const decoded: userInfo = jwt_decode(token);
+      const userId = decoded.id;
+      const CartProductsData = cartProducts.map((product: any) => ( ({id, quantity}) => ({id, quantity}) )(product));
+      const body = {user: userId, products: CartProductsData};
+      const requestUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/orders/create/`;
+      const res = await fetch(requestUrl, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+      })
+      if (res.status === 200) {
+        onClick(false);               // Hide shopping cart
+        dispatch(removeAllItems());   // remove all items from shopping cart
+        router.push('/orderSuccess')  // redirect to order success page
+      }
+      // TODO add try catch
+    } else {
+      // todo pokaz najpierw nalezy sie zalogowac
+    }
+  };
 
   return (
     <>
@@ -34,8 +73,11 @@ const ShoppingCart = ({ onClick }: Props) => {
               </div>
             </div>
             <div className="flex justify-center my-3">
-              <button className="bg-sky-900 hover:bg-sky-700 rounded text-white font-bold py-2 px-4 h-10">
-                Proceed to payment
+              <button 
+                className="bg-sky-900 hover:bg-sky-700 rounded text-white font-bold py-2 px-4 h-10"
+                onClick={() => createOrder()}  
+              >
+                Order
               </button>
             </div>
           </>

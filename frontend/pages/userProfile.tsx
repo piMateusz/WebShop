@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+import Orders from "../components/order/orders";
+
 const UserProfile = () => {
   const [currentUser, setCurrentUser] = useState('');
 
@@ -11,12 +13,10 @@ const UserProfile = () => {
 
   return (
     <div className="ml-20">
-      <h2 className="mt-10 mb-5">
+      <h2 className="text-lg font-bold mt-10 mb-5">
         Hello {currentUser} !
       </h2>
-      <div className="primary-color">
-        In future version of application there will be your profile.  
-      </div>
+      <Orders />
     </div> 
   );
 };

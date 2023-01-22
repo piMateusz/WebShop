@@ -34,7 +34,6 @@ const Nav = () => {
   }
 
   useEffect(() => {
-    console.log('in nav use effect!')
     const token = getCookie(document.cookie, 'jwt');
     if (token) {
       setIsUserLogged(true);
