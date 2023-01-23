@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import PersonIcon from '@mui/icons-material/Person';
-import SearchIcon from '@mui/icons-material/Search';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import Badge, { BadgeProps } from '@mui/material/Badge';
 import IconButton from '@mui/material/IconButton';
@@ -87,7 +86,7 @@ const Nav = () => {
           </a>
         </div>
 
-        <div>
+        <div className="flex items-center">
           { isUserLogged && (
             <>
               <button
@@ -119,9 +118,6 @@ const Nav = () => {
               </span>
             </>
           )}
-          <span className="mx-2 cursor-pointer">
-            <SearchIcon style={{color: 'white'}} />
-          </span>
           <span className="mx-2">
             <IconButton aria-label="cart" onClick={() => setIsCartVisible(prevState => !prevState)}>
               <StyledBadge badgeContent={getTotalQuantity() || 0} color="secondary">

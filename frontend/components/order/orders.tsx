@@ -38,7 +38,7 @@ const Orders = () => {
     };
     const token = getCookie(document.cookie, 'jwt');
     const decoded: userInfo = jwt_decode(token);
-\
+
     const userId = decoded.id;
     fetchOrders(userId);
   }, []);
